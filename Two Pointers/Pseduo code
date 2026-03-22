@@ -1,0 +1,202 @@
+The two pointers is a common DSA method. 
+TWO POINTERS METHOD
+===================
+
+1. INITIALIZATION:
+   - pointer1 = start of array (0)
+   - pointer2 = end of array (length - 1)
+   
+2. MOVEMENT LOGIC:
+   WHILE pointer1 < pointer2:
+       - Check condition on elements at pointer1 and pointer2
+       
+       IF condition is met:
+           - Process/store the result
+           - Move pointer (depends on problem):
+             - Move pointer1 forward (pointer1++)
+             - OR Move pointer2 backward (pointer2--)
+             - OR Move both pointers
+       ELSE:
+           - Adjust pointers based on problem requirements
+           
+3. RETURN result
+
+COMMON PATTERNS:
+================
+
+Pattern 1: Converging Pointers (Meeting in middle)
+   left = 0, right = n-1
+   while left < right:
+       if condition:
+           do something
+           left++
+       else:
+           right--
+
+Pattern 2: Same Direction Pointers (Chasing)
+   slow = 0, fast = 0
+   while fast < n:
+       if condition:
+           slow++
+       fast++
+
+Pattern 3: Sorted Array Search
+   left = 0, right = n-1
+   while left <= right:
+       if arr[left] + arr[right] == target:
+           return result
+       elif arr[left] + arr[right] < target:
+           left++
+       else:
+           right--
+
+// ...existing code...
+
+BEGINNER EXAMPLES:
+==================
+
+1. TWO SUM II (Sorted Array)
+   Problem: Find two numbers that add up to target
+   Approach:
+       left = 0, right = n-1
+       while left < right:
+           sum = arr[left] + arr[right]
+           if sum == target:
+               return [left, right]
+           elif sum < target:
+               left++
+           else:
+               right--
+
+2. VALID PALINDROME
+   Problem: Check if string is palindrome (ignoring spaces/special chars)
+   Approach:
+       left = 0, right = n-1
+       while left < right:
+           skip non-alphanumeric from left
+           skip non-alphanumeric from right
+           if char[left] != char[right]:
+               return false
+           left++
+           right--
+       return true
+
+3. REVERSE STRING
+   Problem: Reverse a string in-place
+   Approach:
+       left = 0, right = n-1
+       while left < right:
+           swap(arr[left], arr[right])
+           left++
+           right--
+
+INTERMEDIATE EXAMPLES:
+======================
+
+4. CONTAINER WITH MOST WATER
+   Problem: Find max area between two lines
+   Approach:
+       left = 0, right = n-1
+       maxArea = 0
+       while left < right:
+           height = min(arr[left], arr[right])
+           width = right - left
+           area = height * width
+           maxArea = max(maxArea, area)
+           if arr[left] < arr[right]:
+               left++
+           else:
+               right--
+       return maxArea
+
+5. 3SUM
+   Problem: Find all triplets that sum to zero
+   Approach:
+       sort array
+       for i = 0 to n-3:
+           left = i+1, right = n-1
+           while left < right:
+               sum = arr[i] + arr[left] + arr[right]
+               if sum == 0:
+                   add triplet to result
+                   left++, right--
+               elif sum < 0:
+                   left++
+               else:
+                   right--
+
+6. REMOVE DUPLICATES FROM SORTED ARRAY
+   Problem: Remove duplicates in-place, return new length
+   Approach:
+       left = 0 (write pointer)
+       right = 1 (read pointer)
+       while right < n:
+           if arr[left] != arr[right]:
+               left++
+               arr[left] = arr[right]
+           right++
+       return left + 1
+
+ADVANCED EXAMPLES:
+==================
+
+7. TRAPPING RAIN WATER
+   Problem: Calculate trapped water between elevations
+   Approach:
+       left = 0, right = n-1
+       leftMax = 0, rightMax = 0
+       water = 0
+       while left < right:
+           if height[left] < height[right]:
+               if height[left] >= leftMax:
+                   leftMax = height[left]
+               else:
+                   water += leftMax - height[left]
+               left++
+           else:
+               if height[right] >= rightMax:
+                   rightMax = height[right]
+               else:
+                   water += rightMax - height[right]
+               right--
+       return water
+
+8. MERGE SORTED ARRAY
+   Problem: Merge two sorted arrays from the end
+   Approach:
+       p1 = m-1 (end of array1)
+       p2 = n-1 (end of array2)
+       p = m+n-1 (end of result)
+       while p1 >= 0 AND p2 >= 0:
+           if arr1[p1] > arr2[p2]:
+               arr1[p] = arr1[p1]
+               p1--
+           else:
+               arr1[p] = arr2[p2]
+               p2--
+           p--
+       if p2 >= 0:
+           copy remaining elements from arr2
+
+9. LONGEST SUBSTRING WITHOUT REPEATING CHARS
+   Problem: Find length of longest substring with unique chars
+   Approach:
+       left = 0, maxLen = 0
+       charIndex = {} (hash map)
+       for right = 0 to n-1:
+           if char[right] in charIndex:
+               left = max(left, charIndex[char[right]] + 1)
+           charIndex[char[right]] = right
+           maxLen = max(maxLen, right - left + 1)
+       return maxLen
+
+10. SLIDING WINDOW MAXIMUM
+    Problem: Find max in each sliding window
+    Approach: (Two pointer variant)
+        Use deque to maintain indices
+        for right = 0 to n-1:
+            remove indices outside window from front
+            remove indices of smaller elements from back
+            add current index to back
+            if window is full:
+                result.push(arr[deque.front()])
